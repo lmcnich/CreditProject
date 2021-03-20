@@ -222,7 +222,16 @@ M <- cor(myData)
                     "NumberOfTime30.59DaysPastDueNotWorse","DebtRatio","MonthlyIncome",
                     "NumberOfOpenCreditLinesAndLoans","NumberOfTimes90DaysLate",
                     "NumberRealEstateLoansOrLines","NumberOfTime60.89DaysPastDueNotWorse")
-  
+ 
+#xgboost
+y <- as.numeric(myData$SeriousDlqin2yrs)
+X <- myData %>% select(-SeriousDlqin2yrs)
+
+params <- list(eval_metrics = 'auc', objective = 'binary:logistic')
+
+model <- xgboost(data=as.matrix(X), label=y, params=params, nrounds=10, verbose=1)
+
+xgb.plot.shap(data=as.matrix(X), model=model, top_n=3) 
 
 
 

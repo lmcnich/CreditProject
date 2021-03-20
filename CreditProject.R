@@ -37,7 +37,7 @@ View(traininga) #view the csv file
 
 ####CLEAN THE DATA
 
-myData <- traininga
+myData <- training
 
 #WHERE DATA IS MISSING
 sapply(myData,function(x) sum(is.na(x)))

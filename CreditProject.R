@@ -1,3 +1,10 @@
+#Things to do?
+#Create a new column variable for total number of creditlines/loans
+#The Y variable 'SeriosDlqi2yrs' why is not in data set?
+#Run summary diagnostics to check p-value or test statistics for signfigance and drop variables
+
+
+
 library(dplyr)
 library(ggplot2)
 library(readr)

@@ -11,6 +11,7 @@ library(readr)
 library(tidyr)
 
 training <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-train.csv")
+test <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-test.csv")
 
 #Clean up the data by rearranging rows to make it easier to view && training data set is now traininga variable
 traininga <- training %>% relocate(`NumberOfTime60-89DaysPastDueNotWorse`, .after = `NumberOfTime30-59DaysPastDueNotWorse`)

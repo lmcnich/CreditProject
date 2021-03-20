@@ -27,6 +27,12 @@ View(traininga) #view the csv file
 
 myData <- traininga
 
+#WHERE DATA IS MISSING
+sapply(myData,function(x) sum(is.na(x)))
+#MISSMAP
+missmap(myData, legend = TRUE, col = c("white","firebrick2"), main= "Missing values vs observed from Training set",yaxt='n')
+
+
 #NumberOfDependents cleaner
 #Missing data
 sum(is.na(myData$NumberOfDependents))

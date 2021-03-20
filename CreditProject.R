@@ -4,10 +4,21 @@ library(readr)
 library(tidyr)
 
 training <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-test.csv")
-View(training) #view the csv file
+
+#Clean up the data by rearranging rows to make it easier to view && training data set is now traininga variable
+traininga <- training %>% relocate(`NumberOfTime60-89DaysPastDueNotWorse`, .after = `NumberOfTime30-59DaysPastDueNotWorse`)
+traininga <- traininga %>% relocate(`NumberRealEstateLoansOrLines`, .before = `NumberOfOpenCreditLinesAndLoans`)
+traininga <- traininga %>% relocate(`age`, .after = `NumberOfDependents`)
+traininga <- traininga %>% relocate(`NumberOfTimes90DaysLate`, .after = `NumberOfTime60-89DaysPastDueNotWorse`)
+traininga <- traininga %>% relocate(`DebtRatio`, .after = `RevolvingUtilizationOfUnsecuredLines`)
+traininga <- traininga %>% relocate(`MonthlyIncome`, .after = `DebtRatio`)
+
+
+View(traininga) #view the csv file
+
 
 #Summary statistics for Age
-age_summary <- training %>% 
+age_summary <- traininga %>% 
   summarize(
     min = min(age, na.rm = TRUE),
     q1 = quantile(age, 0.25, na.rm = TRUE),
@@ -21,5 +32,5 @@ age_summary <- training %>%
 age_summary
 
 #Histogram for age
-ggplot(data = training, mapping = aes(x = age)) +
+ggplot(data = traininga, mapping = aes(x = age)) +
   geom_histogram(color = "white", bins = 20)

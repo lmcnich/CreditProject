@@ -33,7 +33,7 @@ test <- test %>% relocate(`DebtRatio`, .after = `RevolvingUtilizationOfUnsecured
 test <- test %>% relocate(`MonthlyIncome`, .after = `DebtRatio`)
 
 
-View(traininga) #view the csv file
+View(training) #view the csv file
 
 ####CLEAN THE DATA
 

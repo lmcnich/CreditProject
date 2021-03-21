@@ -12,6 +12,7 @@ library(tidyr)
 library(pROC)
 library(xgboost)
 library(Amelia)
+library(psych)
 
 training <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-train.csv")
 test <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-test.csv")

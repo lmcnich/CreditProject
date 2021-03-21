@@ -4,7 +4,7 @@
 #Run summary diagnostics to check p-value or test statistics for signfigance and drop variables
 
 
-
+rm(list=ls())
 library(dplyr)
 library(ggplot2)
 library(readr)

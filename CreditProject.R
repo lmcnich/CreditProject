@@ -37,7 +37,7 @@ test <- test %>% relocate(`MonthlyIncome`, .after = `DebtRatio`)
 
 
 View(training) #view the csv file
-summary(traing)
+summary(training)
 
 ####CLEAN THE DATA
 

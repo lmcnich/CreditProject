@@ -189,20 +189,20 @@ boxplot(myData$RevolvingUtilizationOfUnsecuredLines,col="green")
 
 
 #NumberOfTime30-59DaysPastDueNotWorse cleaner
-sum(is.na('myData$NumberOfTime30-59DaysPastDueNotWorse'))
-table('myData$NumberOfTime30-59DaysPastDueNotWorse')
+sum(is.na(myData$NumberOfTime30.59DaysPastDueNotWorse))
+table(myData$NumberOfTime30.59DaysPastDueNotWorse)
 
 #Absurd data (>50 for example)
-myData$'NumberOfTime30-59DaysPastDueNotWorse'[myData$'NumberOfTime30-59DaysPastDueNotWorse'>=50]<-0
+myData$NumberOfTime30.59DaysPastDueNotWorse[myData$NumberOfTime30.59DaysPastDueNotWorse>=50]<-0
 #Histogram
 hist(myData$NumberOfTime30.59DaysPastDueNotWorse,col="blue")
 
 
 #NumberOfTime60.89DaysPastDueNotWorse cleaner
-sum(is.na(myData$'NumberOfTime60-89DaysPastDueNotWorse'))
-table(myData$'NumberOfTime30-59DaysPastDueNotWorse')
+sum(is.na(myData$NumberOfTime60.89DaysPastDueNotWorse))
+table(myData$NumberOfTime30.59DaysPastDueNotWorse)
 #Absurd data (>50 for example)
-myData$'NumberOfTime60-89DaysPastDueNotWorse'['myData$NumberOfTime60-89DaysPastDueNotWorse'>50]<-0
+myData$NumberOfTime60.89DaysPastDueNotWorse[myData$NumberOfTime60.89DaysPastDueNotWorse>50]<-0
 #Histogram
 hist(myData$NumberOfTime60.89DaysPastDueNotWorse,col="grey")
 

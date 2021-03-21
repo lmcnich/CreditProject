@@ -4,7 +4,7 @@
 #Run summary diagnostics to check p-value or test statistics for signfigance and drop variables
 
 
-rm(list=ls())
+
 library(dplyr)
 library(ggplot2)
 library(readr)
@@ -13,6 +13,7 @@ library(pROC)
 library(xgboost)
 library(Amelia)
 library(psych)
+library(corrplot)
 
 training <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-train.csv")
 test <- read_csv("https://raw.githubusercontent.com/mattmcd71/fnce5352_spring2021/main/Assignments/ConsumerCredit/ConsumerCred-test.csv")
@@ -36,6 +37,7 @@ test <- test %>% relocate(`MonthlyIncome`, .after = `DebtRatio`)
 
 
 View(training) #view the csv file
+summary(traing)
 
 ####CLEAN THE DATA
 
@@ -111,7 +113,9 @@ summary(myData$MonthlyIncome)
 #If salary > 100 000 (senseless)
 myData$MonthlyIncome[is.na(myData$MonthlyIncome)]<-median(myData$MonthlyIncome,na.rm = TRUE)
 myData$MonthlyIncome[(myData$MonthlyIncome)>100000]<-median(myData$MonthlyIncome,na.rm = TRUE)
+myData$MonthlyIncome[(myData$MonthlyIncome)<100]<-median(myData$MonthlyIncome,na.rm = TRUE)
 
+       
 #Histogram
 par(lend="butt")
 rf <- sum(myData$SeriousDlqin2yrs == 0, na.rm = TRUE) #Person no experienced 90 days past due delinquency or worse 
@@ -188,23 +192,23 @@ boxplot(myData$RevolvingUtilizationOfUnsecuredLines,col="green")
 
 
 
-#NumberOfTime30-59DaysPastDueNotWorse cleaner
-sum(is.na(myData$NumberOfTime30.59DaysPastDueNotWorse))
-table(myData$NumberOfTime30.59DaysPastDueNotWorse)
+#NumberOfTime30.59DaysPastDueNotWorse cleaner
+sum(is.na(myData$`NumberOfTime30-59DaysPastDueNotWorse`))
+table(myData$`NumberOfTime30-59DaysPastDueNotWorse`)
 
 #Absurd data (>50 for example)
-myData$NumberOfTime30.59DaysPastDueNotWorse[myData$NumberOfTime30.59DaysPastDueNotWorse>=50]<-0
+myData$`NumberOfTime30-59DaysPastDueNotWorse`[myData$`NumberOfTime30-59DaysPastDueNotWorse`>=50]<-0
 #Histogram
-hist(myData$NumberOfTime30.59DaysPastDueNotWorse,col="blue")
+hist(myData$`NumberOfTime30-59DaysPastDueNotWorse`,col="blue")
 
 
 #NumberOfTime60.89DaysPastDueNotWorse cleaner
-sum(is.na(myData$NumberOfTime60.89DaysPastDueNotWorse))
-table(myData$NumberOfTime30.59DaysPastDueNotWorse)
+sum(is.na(myData$`NumberOfTime60-89DaysPastDueNotWorse`))
+table(myData$`NumberOfTime30-59DaysPastDueNotWorse`)
 #Absurd data (>50 for example)
-myData$NumberOfTime60.89DaysPastDueNotWorse[myData$NumberOfTime60.89DaysPastDueNotWorse>50]<-0
+myData$`NumberOfTime60-89DaysPastDueNotWorse`[myData$`NumberOfTime60-89DaysPastDueNotWorse`>50]<-0
 #Histogram
-hist(myData$NumberOfTime60.89DaysPastDueNotWorse,col="grey")
+hist(myData$`NumberOfTime60-89DaysPastDueNotWorse`,col="grey")
 
 
 #NumberOfTimes90DaysLate cleaner
@@ -220,8 +224,8 @@ hist(myData$NumberOfTimes90DaysLate,col="green")
 
 
 #Information after data distributions & imputation :
-  describeBy(myData)
-
+describeBy(myData)
+View(myData)
 
 #Correlation
 #The correlation plot is usefull to check the correlated variable

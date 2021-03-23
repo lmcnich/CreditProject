@@ -388,15 +388,15 @@ model <- xgboost(data=as.matrix(X), label=y, params=params, nrounds=20, verbose=
 #xgb.plot.shap(data=as.matrix(X), model=model, top_n=3)
 
 ptrain <- predict(model, as.matrix(X))
-p <- predict(model, as.matrix(test))
+p <- predict(model, as.matrix(myTest))
 
-id <- as.numeric(test$id)
+id <- as.numeric(myTest$id)
 
 res <- data.frame(id, p)
 
 #area under curve
-roc(y, ptrain, plot=TRUE)
-
+auc <- roc(y, ptrain, plot=TRUE)
+print(auc)
 
 
 

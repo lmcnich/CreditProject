@@ -241,6 +241,142 @@ M <- cor(myData)
                     "NumberOfOpenCreditLinesAndLoans","NumberOfTimes90DaysLate",
                     "NumberRealEstateLoansOrLines","NumberOfTime60.89DaysPastDueNotWorse")
   
+       
+ 
+ ####CLEAN THE DATA FOR TEST DATA
+
+myTest <- test
+
+#WHERE DATA IS MISSING
+sapply(myTest,function(x) sum(is.na(x)))
+#MISSMAP
+missmap(myTest, legend = TRUE, col = c("white","firebrick2"), main= "Missing values vs observed from Training set",yaxt='n')
+
+
+#NumberOfDependents cleaner
+#Missing data
+sum(is.na(myTest$NumberOfDependents))
+summary(myTest$NumberOfDependents)
+#Median
+myTest$NumberOfDependents[is.na(myTest$NumberOfDependents)] <- median(myTest$NumberOfDependents,na.rm=T)
+myTest$NumberOfDependents<-ifelse(myTest$NumberOfDependents>10,median(myTest$NumberOfDependents),myTest$NumberOfDependents)
+
+
+
+#NumberRealEstateLoansOrLines cleaner
+summary(myTest$NumberRealEstateLoansOrLines)
+sum(is.na(myTest$NumberRealEstateLoansOrLines))
+table(myTest$NumberRealEstateLoansOrLines)
+#Median
+myTest$NumberRealEstateLoansOrLines<-ifelse(mytest$NumberRealEstateLoansOrLines==54,median(myTest$NumberOfOpenCreditLinesAndLoans),myTest$NumberRealEstateLoansOrLines)
+
+
+
+
+#NumberOfOpenCreditLinesAndLoans cleaner
+sum(is.na(myTest$NumberOfOpenCreditLinesAndLoans))
+summary(myTest$NumberOfOpenCreditLinesAndLoans)
+#Replace by median (more than 15 is strange)
+myTest$NumberOfOpenCreditLinesAndLoans<-ifelse(myTest$NumberOfOpenCreditLinesAndLoans>15,median(myTest$NumberOfOpenCreditLinesAndLoans),myTest$NumberOfOpenCreditLinesAndLoans)
+
+
+
+
+#Monthly Income cleaner
+sum(is.na(myTest$MonthlyIncome))
+summary(myTest$MonthlyIncome)
+#If salary > 100 000 (senseless)
+myTest$MonthlyIncome[is.na(myTest$MonthlyIncome)]<-median(myTest$MonthlyIncome,na.rm = TRUE)
+myTest$MonthlyIncome[(myTest$MonthlyIncome)>100000]<-median(myTest$MonthlyIncome,na.rm = TRUE)
+myTest$MonthlyIncome[(myTest$MonthlyIncome)<100]<-median(myTest$MonthlyIncome,na.rm = TRUE)
+
+
+
+#Debt Ratio cleaner
+summary(myTest$DebtRatio)
+sum(is.na(myTest$DebtRatio))
+range(myTest$DebtRatio)
+#Replace by median
+myTest$DebtRatio<-ifelse(myTest$DebtRatio<0,median(myTest$DebtRatio),myTest$DebtRatio)
+myTest$DebtRatio<-ifelse(myTest$DebtRatio>1,median(myTest$DebtRatio),myTest$DebtRatio)
+
+
+
+#Age cleaner
+sum(is.na(myTest$age))
+summary(myTest$age)
+
+
+#RevolvingUtilizationOfUnsecuredLines cleaner
+summary(myTest$RevolvingUtilizationOfUnsecuredLines)
+
+# It should be between 0 and 1. (%)
+sum(is.na(myTest$RevolvingUtilizationOfUnsecuredLines))
+sum(myTest$RevolvingUtilizationOfUnsecuredLines>1)
+
+# Median (?)
+myTest$RevolvingUtilizationOfUnsecuredLines[myTest$RevolvingUtilizationOfUnsecuredLines>1]=median(myTest$RevolvingUtilizationOfUnsecuredLines)
+
+#If <0 -> 0 | If >1 -> 1 
+myTest$RevolvingUtilizationOfUnsecuredLines<-ifelse(myTest$RevolvingUtilizationOfUnsecuredLines<0,0,myTest$RevolvingUtilizationOfUnsecuredLines)
+myTest$RevolvingUtilizationOfUnsecuredLines<-ifelse(myTest$RevolvingUtilizationOfUnsecuredLines>1,1,myTest$RevolvingUtilizationOfUnsecuredLines)
+
+
+
+#NumberOfTime30.59DaysPastDueNotWorse cleaner
+sum(is.na(myTest$`NumberOfTime30-59DaysPastDueNotWorse`))
+table(myTest$`NumberOfTime30-59DaysPastDueNotWorse`)
+
+#Absurd data (>50 for example)
+myTest$`NumberOfTime30-59DaysPastDueNotWorse`[myTest$`NumberOfTime30-59DaysPastDueNotWorse`>=50]<-0
+#Histogram
+hist(myTest$`NumberOfTime30-59DaysPastDueNotWorse`,col="blue")
+
+
+#NumberOfTime60.89DaysPastDueNotWorse cleaner
+sum(is.na(myTest$`NumberOfTime60-89DaysPastDueNotWorse`))
+table(myTest$`NumberOfTime30-59DaysPastDueNotWorse`)
+#Absurd data (>50 for example)
+myTest$`NumberOfTime60-89DaysPastDueNotWorse`[myTest$`NumberOfTime60-89DaysPastDueNotWorse`>50]<-0
+
+
+#NumberOfTimes90DaysLate cleaner
+sum(is.na(myTest$NumberOfTimes90DaysLate))
+summary(myTest$NumberOfTimes90DaysLate)
+table(myTest$NumberOfTimes90DaysLate)
+#More than 20 is non sense 
+myTest$NumberOfTimes90DaysLate<-ifelse(myTest$NumberOfTimes90DaysLate>50,0,myTest$NumberOfTimes90DaysLate)
+#Histogram
+hist(myTest$NumberOfTimes90DaysLate,col="green")
+
+
+
+
+#Information after data distributions & imputation :
+describeBy(myTest)
+View(myTest)
+
+#Correlation
+#The correlation plot is usefull to check the correlated variable
+
+names(myTest) <- c("Result", "DefaultLine","Age","DelayBetween3059","DebtRatio","MonthlyIncome","NbLoanCredit","DelaySup90","NbRealEstateLoansLines","DelayBetween6089","NumberOfDependents")
+head(myTest)
+cor(myTest)
+M <- cor(myTest)
+corrplot(M, method = "square")
+
+names(myTest) <-c("SeriousDlqin2yrs","RevolvingUtilizationOfUnsecuredLines","age",
+                  "NumberOfTime30.59DaysPastDueNotWorse","DebtRatio","MonthlyIncome",
+                  "NumberOfOpenCreditLinesAndLoans","NumberOfTimes90DaysLate",
+                  "NumberRealEstateLoansOrLines","NumberOfTime60.89DaysPastDueNotWorse")
+      
+       
+       
+       
+       
+       
+       
+       
 #xgboost deals with NA treats as data
 y <- as.numeric(myData$SeriousDlqin2yrs)
 X <- myData[, !(colnames(myData) == 'SeriousDlqin2yrs')]
